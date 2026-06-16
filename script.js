@@ -1,234 +1,162 @@
-// Налаштування адмінки
-const ADMIN_PASSWORD = "1234"; // Зміни на свій секретний пароль
-const TELEGRAM_USERNAME = "OblakoTeam_Work"; 
-
-// Масив товарів (Якщо в пам'яті браузера порожньо — завантажуємо базові товари)
-let defaultProducts = [
-    { id: 1, name: "Чохол Silicone Case Premium", price: 550, desc: "Оригінальний м'який силіконовий чохол з мікрофіброю всередині.", img: "item1.jpg" },
-    { id: 2, name: "Захисне скло 5D Full Glue", price: 290, desc: "Надміцне гартоване скло з повним проклеюванням екрана.", img: "item2.jpg" },
-    { id: 3, name: "Кабель Fast Charge Type-C 1m", price: 350, desc: "Швидка зарядка та синхронізація даних, міцне нейлонове обплетення.", img: "item3.jpg" }
+// Начальная база данных товаров (если LocalStorage пуст)
+const defaultProducts = [
+    {
+        id: 1,
+        name: "Приватный Скрипт Sky Premium",
+        price: 1490,
+        img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=500",
+        desc: "Полностью настроенный скрипт автоматизации с обходом систем защиты. Оптимизирован под OblakoTeam."
+    },
+    {
+        id: 2,
+        name: "Готовый Магазин Скриптов (Сборка)",
+        price: 2990,
+        img: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=500",
+        desc: "Чистый HTML/CSS/JS шаблон магазина с адаптивной мобильной версткой и готовой панелью управления."
+    }
 ];
 
-// Завантаження товарів з локального сховища або дефолтних
-let products = JSON.parse(localStorage.getItem('sky_products')) || defaultProducts;
-let cart = [];
+// Загрузка товаров из хранилища браузера или дефолтных
+let products = JSON.parse(localStorage.getItem('sky_store_products')) || defaultProducts;
 
-// При першому запуску сайту відразу малюємо каталог
-document.addEventListener("DOMContentLoaded", () => {
-    renderCatalog();
-});
+// DOM Элементы
+const productsContainer = document.getElementById('productsContainer');
+const adminModal = document.getElementById('adminModal');
+const openAdminBtn = document.getElementById('openAdminBtn');
+const closeAdminBtn = document.getElementById('closeAdminBtn');
+const closeAuthBtn = document.getElementById('closeAuthBtn');
+const loginAdminBtn = document.getElementById('loginAdminBtn');
+const saveProductBtn = document.getElementById('saveProductBtn');
 
-// Функція для виведення товарів у каталог магазину
+const adminPasswordInput = document.getElementById('adminPassword');
+const adminAuthBlock = document.getElementById('adminAuthBlock');
+const adminControlBlock = document.getElementById('adminControlBlock');
+const adminProductsList = document.getElementById('adminProductsList');
+
+// Функция вывода каталога на главную страницу
 function renderCatalog() {
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
+    productsContainer.innerHTML = '';
     
-    grid.innerHTML = '';
+    if(products.length === 0) {
+        productsContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666;">Каталог пуст. Добавьте товары через админку.</p>`;
+        return;
+    }
 
     products.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <div class="product-image">
-                <img src="${product.img}" alt="${product.name}">
-            </div>
+            <img src="${product.img}" alt="${product.name}" class="product-img">
             <div class="product-info">
-                <h3 class="product-title">${product.name}</h3>
-                <p class="product-description">${product.desc || ''}</p>
-                <div class="product-footer">
-                    <span class="product-price">${product.price} ₴</span>
-                    <button class="buy-btn" onclick="addToCart('${product.name}', ${product.price})">
-                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                    </button>
+                <div class="product-name">${product.name}</div>
+                <div class="product-desc">${product.desc}</div>
+                <div class="product-bottom">
+                    <div class="product-price">${product.price} ₽</div>
+                    <button class="btn-buy" onclick="alert('Вы покупаете: ${product.name}')">Купить</button>
                 </div>
             </div>
         `;
-        grid.appendChild(card);
+        productsContainer.appendChild(card);
     });
 }
 
-// Логіка вітального екрану
-function enterStore() {
-    const welcomeScreen = document.getElementById('welcome-screen');
-    const mainContents = document.querySelectorAll('.hidden-content');
-    welcomeScreen.style.opacity = '0';
-    welcomeScreen.style.transform = 'scale(1.03)';
-    setTimeout(() => {
-        welcomeScreen.style.display = 'none';
-        mainContents.forEach(el => el.classList.add('show-content'));
-    }, 500);
-}
-
-// Управління вікнами авторизації адміна
-function openAdminAuth() { document.getElementById('adminAuthModal').style.display = 'flex'; }
-function closeAdminAuth() { document.getElementById('adminAuthModal').style.display = 'none'; document.getElementById('adminPassword').value = ''; }
-
-// Перевірка пароля адміна
-function checkAdminPassword() {
-    const passInput = document.getElementById('adminPassword').value;
-    if (passInput === ADMIN_PASSWORD) {
-        closeAdminAuth();
-        openAdminPanel();
-    } else {
-        alert("Невірний пароль адміністратора!");
-    }
-}
-
-// Відкриття та оновлення панелі адміна
-function openAdminPanel() {
-    document.getElementById('adminPanelModal').style.display = 'flex';
-    renderAdminProducts();
-}
-function closeAdminPanel() { document.getElementById('adminPanelModal').style.display = 'none'; }
-
-// Виведення списку товарів усередині адмінки (з кнопкою Видалити)
-function renderAdminProducts() {
-    const container = document.getElementById('admin-items-container');
-    container.innerHTML = '';
-
+// Функция вывода списка товаров в самой админке для удаления
+function renderAdminList() {
+    adminProductsList.innerHTML = '';
     products.forEach(product => {
         const item = document.createElement('div');
         item.className = 'admin-product-item';
         item.innerHTML = `
-            <span>${product.name} (${product.price} ₴)</span>
-            <button class="delete-product-btn" onclick="deleteProduct(${product.id})">Видалити</button>
+            <span>${product.name} (${product.price} руб)</span>
+            <button class="delete-btn" onclick="deleteProduct(${product.id})">Удалить</button>
         `;
-        container.appendChild(item);
+        adminProductsList.appendChild(item);
     });
 }
 
-// Додавання нового товару (включаючи обробку завантаженого фото)
-function addNewProduct() {
+// Открытие и закрытие модалки
+openAdminBtn.addEventListener('click', () => {
+    adminModal.style.display = 'flex';
+});
+
+function closeAdminModal() {
+    adminModal.style.display = 'none';
+    // Сбрасываем авторизацию при закрытии ради безопасности
+    adminPasswordInput.value = '';
+    adminAuthBlock.style.display = 'block';
+    adminControlBlock.style.display = 'none';
+    closeAuthBtn.style.display = 'block';
+}
+
+closeAdminBtn.addEventListener('click', closeAdminModal);
+closeAuthBtn.addEventListener('click', closeAdminModal);
+
+// Авторизация в админке (Пароль: 1234)
+loginAdminBtn.addEventListener('click', () => {
+    if (adminPasswordInput.value === '1234') {
+        adminAuthBlock.style.display = 'none';
+        closeAuthBtn.style.display = 'none';
+        adminControlBlock.style.display = 'block';
+        renderAdminList();
+    } else {
+        alert('Неверный пароль администратора!');
+    }
+});
+
+// Добавление нового товара
+saveProductBtn.addEventListener('click', () => {
     const name = document.getElementById('newProdName').value.trim();
     const price = parseInt(document.getElementById('newProdPrice').value);
+    let img = document.getElementById('newProdImg').value.trim();
     const desc = document.getElementById('newProdDesc').value.trim();
-    const imageFile = document.getElementById('newProdImage').files[0];
 
-    if (!name || !price) {
-        alert("Будь ласка, вкажіть назву та ціну товару!");
+    if (!name || !price || !desc) {
+        alert('Пожалуйста, заполните поля названия, цены и описания!');
         return;
     }
 
-    // Якщо фото вибрано, перетворюємо його на Base64 рядок, щоб зберегти в пам'ять
-    if (imageFile) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const imgData = e.target.result; // Це готове фото у вигляді тексту
-            saveProductToArray(name, price, desc, imgData);
-        };
-        reader.readAsDataURL(imageFile);
-    } else {
-        // Якщо фото немає, ставимо дефолтну заглушку
-        saveProductToArray(name, price, desc, 'item1.jpg');
+    // Если картинка не указана, ставим заглушку
+    if (!img) {
+        img = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=500';
     }
-}
 
-function saveProductToArray(name, price, desc, img) {
     const newProduct = {
-        id: Date.now(), // Унікальний ID за часом створення
+        id: Date.now(), // Уникальный ID через метку времени
         name: name,
         price: price,
-        desc: desc,
-        img: img
+        img: img,
+        desc: desc
     };
 
     products.push(newProduct);
-    localStorage.setItem('sky_products', JSON.stringify(products)); // Зберігаємо в пам'ять
+    saveToStorage();
     
-    // Очищаємо форму
+    // Сброс полей ввода
     document.getElementById('newProdName').value = '';
     document.getElementById('newProdPrice').value = '';
+    document.getElementById('newProdImg').value = '';
     document.getElementById('newProdDesc').value = '';
-    document.getElementById('newProdImage').value = '';
 
-    // Оновлюємо інтерфейс сайту та адмінки
-    renderAdminProducts();
+    // Обновляем списки везде
     renderCatalog();
-    alert("Товар успішно додано на сайт!");
-}
+    renderAdminList();
+    alert('Товар успешно добавлен на витрину!');
+});
 
-// Видалення товару
-function deleteProduct(id) {
-    if (confirm("Ви впевнені, що хочете видалити цей товар?")) {
+// Удаление товара
+window.deleteProduct = function(id) {
+    if(confirm('Вы действительно хотите удалить этот товар?')) {
         products = products.filter(p => p.id !== id);
-        localStorage.setItem('sky_products', JSON.stringify(products));
-        renderAdminProducts();
+        saveToStorage();
         renderCatalog();
+        renderAdminList();
     }
+};
+
+// Сохранение в LocalStorage
+function saveToStorage() {
+    localStorage.setItem('sky_store_products', JSON.stringify(products));
 }
 
-// КОШИК ТА ЛОГІКА ЗАМОВЛЕННЯ (Без змін)
-function toggleCart() { document.getElementById('cartModal').classList.toggle('active'); }
-
-function addToCart(name, price) {
-    const existingItem = cart.find(item => item.name === name);
-    if (existingItem) { existingItem.quantity += 1; } 
-    else { cart.push({ name: name, price: price, quantity: 1 }); }
-    updateCartUI();
-}
-
-function updateCartUI() {
-    const cartCountEl = document.getElementById('cart-count');
-    const itemsListEl = document.getElementById('cart-items-list');
-    const totalPriceEl = document.getElementById('cart-total-price');
-
-    const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCountEl.textContent = totalCount;
-    itemsListEl.innerHTML = '';
-
-    if (cart.length === 0) {
-        itemsListEl.innerHTML = '<p class="empty-text">Кошик поки що порожній</p>';
-        totalPriceEl.textContent = '0 ₴';
-        return;
-    }
-
-    let totalSum = 0;
-    cart.forEach(item => {
-        const itemSum = item.price * item.quantity;
-        totalSum += itemSum;
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'cart-item';
-        itemDiv.innerHTML = `
-            <div>
-                <div style="font-weight: 500; margin-bottom: 4px; font-size: 14px;">${item.name}</div>
-                <small style="color: #6c757d;">${item.price} ₴ × ${item.quantity}</small>
-            </div>
-            <div style="font-weight: 600; color: #007bff; font-size: 15px;">${itemSum} ₴</div>
-        `;
-        itemsListEl.appendChild(itemDiv);
-    });
-    totalPriceEl.textContent = `${totalSum} ₴`;
-}
-
-function sendToTelegram() {
-    if (cart.length === 0) { alert("Ваш кошик порожній!"); return; }
-    let message = "Привіт, OblakoTeam! Я хочу зробити замовлення на вашому сайті:\n\n";
-    let totalSum = 0;
-    cart.forEach((item, index) => {
-        const itemSum = item.price * item.quantity;
-        totalSum += itemSum;
-        message += `${index + 1}. 🛒 ${item.name} — ${item.quantity} шт. (${itemSum} ₴)\n`;
-    });
-    message += `\n💰 Загальна сума замовлення: ${totalSum} ₴`;
-    window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${encodeURIComponent(message)}`, '_blank');
-    cart = [];
-    updateCartUI();
-    document.getElementById('cartModal').classList.remove('active');
-    showThankYouModal();
-}
-
-function showThankYouModal() {
-    const modal = document.createElement('div');
-    modal.className = 'thank-you-modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-icon">✨</div>
-            <h2>Дякуємо за замовлення!</h2>
-            <p>Ваша заявка успішно сформована та надіслана.</p>
-            <p>Менеджер уже чекає на вас у <strong>Telegram</strong>!</p>
-            <button class="close-modal-btn" onclick="this.parentElement.parentElement.remove()">Чудово</button>
-        </div>
-    `;
-    document.body.appendChild(modal);
-    setTimeout(() => { if (modal.parentNode) modal.remove(); }, 5000);
-}
+// Запуск при старте страницы
+renderCatalog();
