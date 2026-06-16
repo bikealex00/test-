@@ -1,162 +1,201 @@
-// Начальная база данных товаров (если LocalStorage пуст)
-const defaultProducts = [
-    {
-        id: 1,
-        name: "Приватный Скрипт Sky Premium",
-        price: 1490,
-        img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=500",
-        desc: "Полностью настроенный скрипт автоматизации с обходом систем защиты. Оптимизирован под OblakoTeam."
-    },
-    {
-        id: 2,
-        name: "Готовый Магазин Скриптов (Сборка)",
-        price: 2990,
-        img: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=500",
-        desc: "Чистый HTML/CSS/JS шаблон магазина с адаптивной мобильной версткой и готовой панелью управления."
-    }
+// Конфигурация Telegram (Замени юзернейм на свой без знака @)
+const TELEGRAM_USERNAME = "ТВОЙ_ТЕЛЕГРАМ_НИК";
+
+// Дефолтные товары магазина
+let products = [
+    { id: 1, name: "Приватный Скрипт SkyHack", price: 490, img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400" },
+    { id: 2, name: "Игровая валюта (Премиум)", price: 250, img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=400" },
+    { id: 3, name: "Набор читов Oblako Pack", price: 990, img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400" }
 ];
 
-// Загрузка товаров из хранилища браузера или дефолтных
-let products = JSON.parse(localStorage.getItem('sky_store_products')) || defaultProducts;
+// Состояние корзины
+let cart = [];
 
 // DOM Элементы
 const productsContainer = document.getElementById('productsContainer');
+const cartIcon = document.getElementById('cartIcon');
+const cartModal = document.getElementById('cartModal');
+const closeCartBtn = document.getElementById('closeCartBtn');
+const cartItemsContainer = document.getElementById('cartItemsContainer');
+const cartTotalPrice = document.getElementById('cartTotalPrice');
+const cartCount = document.getElementById('cartCount');
+const checkoutBtn = document.getElementById('checkoutBtn');
+
+// Элементы админки
 const adminModal = document.getElementById('adminModal');
-const openAdminBtn = document.getElementById('openAdminBtn');
 const closeAdminBtn = document.getElementById('closeAdminBtn');
-const closeAuthBtn = document.getElementById('closeAuthBtn');
-const loginAdminBtn = document.getElementById('loginAdminBtn');
-const saveProductBtn = document.getElementById('saveProductBtn');
+const addProdBtn = document.getElementById('addProdBtn');
+const adminItemsList = document.getElementById('adminItemsList');
 
-const adminPasswordInput = document.getElementById('adminPassword');
-const adminAuthBlock = document.getElementById('adminAuthBlock');
-const adminControlBlock = document.getElementById('adminControlBlock');
-const adminProductsList = document.getElementById('adminProductsList');
-
-// Функция вывода каталога на главную страницу
-function renderCatalog() {
+// Инициализация отображения витрины
+function renderProducts() {
     productsContainer.innerHTML = '';
-    
-    if(products.length === 0) {
-        productsContainer.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #666;">Каталог пуст. Добавьте товары через админку.</p>`;
-        return;
-    }
-
     products.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
-            <img src="${product.img}" alt="${product.name}" class="product-img">
-            <div class="product-info">
-                <div class="product-name">${product.name}</div>
-                <div class="product-desc">${product.desc}</div>
-                <div class="product-bottom">
-                    <div class="product-price">${product.price} ₽</div>
-                    <button class="btn-buy" onclick="alert('Вы покупаете: ${product.name}')">Купить</button>
-                </div>
-            </div>
+            <img src="${product.img}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <div class="price">${product.price} руб.</div>
+            <button class="btn" onclick="addToCart(${product.id})">В корзину</button>
         `;
         productsContainer.appendChild(card);
     });
 }
 
-// Функция вывода списка товаров в самой админке для удаления
-function renderAdminList() {
-    adminProductsList.innerHTML = '';
-    products.forEach(product => {
-        const item = document.createElement('div');
-        item.className = 'admin-product-item';
-        item.innerHTML = `
-            <span>${product.name} (${product.price} руб)</span>
-            <button class="delete-btn" onclick="deleteProduct(${product.id})">Удалить</button>
+// Добавление товара в корзину
+window.addToCart = function(id) {
+    const product = products.find(p => p.id === id);
+    const cartItem = cart.find(item => item.id === id);
+
+    if (cartItem) {
+        cartItem.quantity++;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+    updateCart();
+};
+
+// Удаление товара из корзины
+window.removeFromCart = function(id) {
+    cart = cart.filter(item => item.id !== id);
+    updateCart();
+};
+
+// Обновление состояния корзины
+function updateCart() {
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+    let count = 0;
+
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+        count += item.quantity;
+
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+            <div class="cart-item-info">
+                <h4>${item.name}</h4>
+                <span>${item.quantity} x ${item.price} руб.</span>
+            </div>
+            <button class="btn-remove" onclick="removeFromCart(${item.id})">Удалить</button>
         `;
-        adminProductsList.appendChild(item);
+        cartItemsContainer.appendChild(row);
+    });
+
+    cartTotalPrice.innerText = `${total} руб.`;
+    cartCount.innerText = count;
+}
+
+// Открытие и закрытие корзины
+cartIcon.addEventListener('click', () => cartModal.classList.add('active'));
+closeCartBtn.addEventListener('click', () => cartModal.classList.remove('active'));
+
+// Сворачивание корзины при нажатии на ЛЮБУЮ область сайта (вне контента корзины)
+cartModal.addEventListener('click', (e) => {
+    if (e.target === cartModal) {
+        cartModal.classList.remove('active');
+    }
+});
+
+// Секретные клавиши для Админки: Ctrl + Shift + A
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a' || e.key === 'ф' || e.key === 'Ф')) {
+        e.preventDefault();
+        const password = prompt("Введите секретный пароль администратора:");
+        if (password === "1234") {
+            openAdminPanel();
+        } else if (password !== null) {
+            alert("Неверный пароль!");
+        }
+    }
+});
+
+// Функции Админ-панели
+function openAdminPanel() {
+    adminModal.classList.add('active');
+    renderAdminItems();
+}
+
+closeAdminBtn.addEventListener('click', () => adminModal.classList.remove('active'));
+
+function renderAdminItems() {
+    adminItemsList.innerHTML = '';
+    products.forEach(product => {
+        const row = document.createElement('div');
+        row.className = 'admin-item-row';
+        row.innerHTML = `
+            <span>${product.name} (${product.price} руб.)</span>
+            <button class="btn-remove" onclick="deleteProduct(${product.id})">Удалить</button>
+        `;
+        adminItemsList.appendChild(row);
     });
 }
 
-// Открытие и закрытие модалки
-openAdminBtn.addEventListener('click', () => {
-    adminModal.style.display = 'flex';
-});
-
-function closeAdminModal() {
-    adminModal.style.display = 'none';
-    // Сбрасываем авторизацию при закрытии ради безопасности
-    adminPasswordInput.value = '';
-    adminAuthBlock.style.display = 'block';
-    adminControlBlock.style.display = 'none';
-    closeAuthBtn.style.display = 'block';
-}
-
-closeAdminBtn.addEventListener('click', closeAdminModal);
-closeAuthBtn.addEventListener('click', closeAdminModal);
-
-// Авторизация в админке (Пароль: 1234)
-loginAdminBtn.addEventListener('click', () => {
-    if (adminPasswordInput.value === '1234') {
-        adminAuthBlock.style.display = 'none';
-        closeAuthBtn.style.display = 'none';
-        adminControlBlock.style.display = 'block';
-        renderAdminList();
-    } else {
-        alert('Неверный пароль администратора!');
-    }
-});
-
-// Добавление нового товара
-saveProductBtn.addEventListener('click', () => {
-    const name = document.getElementById('newProdName').value.trim();
+// Добавление нового товара из админки
+addProdBtn.addEventListener('click', () => {
+    const name = document.getElementById('newProdName').value;
     const price = parseInt(document.getElementById('newProdPrice').value);
-    let img = document.getElementById('newProdImg').value.trim();
-    const desc = document.getElementById('newProdDesc').value.trim();
+    let img = document.getElementById('newProdImg').value;
 
-    if (!name || !price || !desc) {
-        alert('Пожалуйста, заполните поля названия, цены и описания!');
+    if (!name || !price) {
+        alert("Заполните название и цену!");
         return;
     }
-
-    // Если картинка не указана, ставим заглушку
-    if (!img) {
-        img = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=500';
-    }
+    if (!img) img = "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400";
 
     const newProduct = {
-        id: Date.now(), // Уникальный ID через метку времени
+        id: Date.now(),
         name: name,
         price: price,
-        img: img,
-        desc: desc
+        img: img
     };
 
     products.push(newProduct);
-    saveToStorage();
-    
-    // Сброс полей ввода
+    renderProducts();
+    renderAdminItems();
+
+    // Очищаем форму
     document.getElementById('newProdName').value = '';
     document.getElementById('newProdPrice').value = '';
     document.getElementById('newProdImg').value = '';
-    document.getElementById('newProdDesc').value = '';
-
-    // Обновляем списки везде
-    renderCatalog();
-    renderAdminList();
-    alert('Товар успешно добавлен на витрину!');
 });
 
-// Удаление товара
+// Удаление товара из админки
 window.deleteProduct = function(id) {
-    if(confirm('Вы действительно хотите удалить этот товар?')) {
-        products = products.filter(p => p.id !== id);
-        saveToStorage();
-        renderCatalog();
-        renderAdminList();
-    }
+    products = products.filter(p => p.id !== id);
+    renderProducts();
+    renderAdminItems();
 };
 
-// Сохранение в LocalStorage
-function saveToStorage() {
-    localStorage.setItem('sky_store_products', JSON.stringify(products));
-}
+// Оформление заказа и отправка данных в Telegram
+checkoutBtn.addEventListener('click', () => {
+    if (cart.length === 0) {
+        alert("Ваша корзина пуста!");
+        return;
+    }
 
-// Запуск при старте страницы
-renderCatalog();
+    let message = "Привет! Я хочу сделать заказ в OblakoTeam Store:\n\n";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        message += `${index + 1}. ${item.name} — ${item.quantity} шт. (${itemTotal} руб.)\n`;
+    });
+
+    message += `\nИтоговая сумма заказа: ${total} руб.`;
+
+    // Кодируем текст для URL и осуществляем переход в Telegram
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://t.me/${TELEGRAM_USERNAME}?text=${encodedMessage}`, '_blank');
+    
+    // Очищаем корзину после отправки
+    cart = [];
+    updateCart();
+    cartModal.classList.remove('active');
+});
+
+// Старт приложения
+renderProducts();
