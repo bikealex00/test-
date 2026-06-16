@@ -1,111 +1,69 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sky Store — Аксесуари</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Sky Store | OblakoTeam</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div id="welcome-screen" onclick="enterStore()">
-        <div class="welcome-content">
-            <div class="welcome-logo">☁️</div>
-            <h1>Ласкаво просимо до Sky Store</h1>
-            <p>Стильні аксесуари та найкраща якість</p>
-            <button class="welcome-btn">Увійти в магазин</button>
-        </div>
-    </div>
-
-    <header class="main-header hidden-content">
-        <div class="header-container">
-            <div class="logo">Sky<span>Store</span></div>
-            
-            <div class="header-buttons">
-                <button class="admin-open-btn" onclick="openAdminAuth()">🔐 Адмін</button>
-
-                <div class="cart-icon-wrapper" onclick="toggleCart()">
-                    <div class="cart-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                        <span id="cart-count">0</span>
-                    </div>
-                    <span class="cart-text">Кошик</span>
-                </div>
-            </div>
-        </div>
+    <header class="header">
+        <div class="logo">Sky Store <span class="accent">OblakoTeam</span></div>
+        <nav class="nav">
+            <a href="#catalog">Каталог</a>
+            <a href="#about">О нас</a>
+            <button class="admin-open-btn" id="openAdminBtn">Админ-панель</button>
+        </nav>
     </header>
 
-    <section class="hero hidden-content">
-        <div class="hero-container">
-            <h1>Преміум аксесуари</h1>
-            <p>Обирайте найкраще для своїх девайсів із нашого каталогу</p>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Лучшие цифровые товары и скрипты</h1>
+            <p>Быстрая доставка, гарантия качества и поддержка 24/7</p>
+            <a href="#catalog" class="btn-main">Перейти в каталог</a>
         </div>
     </section>
 
-    <main class="catalog-container hidden-content">
-        <div id="products-grid" class="products-grid">
+    <main class="container">
+        <h2 id="catalog" class="section-title">Каталог товаров</h2>
+        <div class="products-grid" id="productsContainer">
             </div>
     </main>
 
-    <div id="adminAuthModal" class="admin-modal">
+    <div class="admin-modal" id="adminModal">
         <div class="admin-modal-content">
-            <h2>Вхід в панель адміна</h2>
-            <input type="password" id="adminPassword" placeholder="Введіть пароль">
-            <div class="admin-modal-buttons">
-                <button class="save-product-btn" onclick="checkAdminPassword()">Увійти</button>
-                <button class="close-admin-btn" onclick="closeAdminAuth()">Скасувати</button>
+            <h3>Управление магазином</h3>
+            
+            <div id="adminAuthBlock">
+                <input type="password" id="adminPassword" placeholder="Введите пароль админа">
+                <button class="save-product-btn" id="loginAdminBtn">Войти</button>
             </div>
-        </div>
-    </div>
 
-    <div id="adminPanelModal" class="admin-modal">
-        <div class="admin-modal-content admin-panel-wide">
-            <div class="admin-panel-header">
-                <h2>Панель керування товарами ☁️</h2>
-                <button class="close-panel-x" onclick="closeAdminPanel()">✕</button>
+            <div id="adminControlBlock" style="display: none;">
+                <h4>Добавить новый товар</h4>
+                <input type="text" id="newProdName" placeholder="Название товара">
+                <input type="number" id="newProdPrice" placeholder="Цена (руб.)">
+                <input type="text" id="newProdImg" placeholder="Ссылка на картинку">
+                <textarea id="newProdDesc" placeholder="Описание товара" rows="3"></textarea>
+                
+                <div class="admin-modal-buttons">
+                    <button class="save-product-btn" id="saveProductBtn">Сохранить</button>
+                    <button class="close-admin-btn" id="closeAdminBtn">Закрыть</button>
+                </div>
+
+                <hr style="border: 1px solid #333; margin: 20px 0;">
+                <h4>Текущие товары</h4>
+                <div id="adminProductsList"></div>
             </div>
             
-            <div class="add-product-form">
-                <h3>Додати новий товар</h3>
-                <input type="text" id="newProdName" placeholder="Назва товару (напр., Чохол Silicone Case)">
-                <input type="number" id="newProdPrice" placeholder="Ціна в гривнях (напр., 550)">
-                <input type="text" id="newProdDesc" placeholder="Короткий опис товару">
-                
-                <div class="file-input-wrapper">
-                    <label>Виберіть фото товару:</label>
-                    <input type="file" id="newProdImage" accept="image/*">
-                </div>
-                
-                <button class="save-product-btn" style="background-color: #007bff;" onclick="addNewProduct()">Зберегти та додати на сайт</button>
-            </div>
-
-            <div class="admin-products-list">
-                <h3>Поточні товари на сайті</h3>
-                <div id="admin-items-container">
-                    </div>
-            </div>
+            <button class="close-admin-btn" id="closeAuthBtn" style="margin-top: 15px; width: 100%;">Закрыть</button>
         </div>
     </div>
 
-    <div id="cartModal" class="cart-modal">
-        <div class="cart-content">
-            <div class="cart-header">
-                <h2>Ваш кошик</h2>
-                <button class="close-cart-btn" onclick="toggleCart()">✕</button>
-            </div>
-            <div id="cart-items-list" class="cart-items-container"></div>
-            <div class="cart-footer">
-                <div class="total-row">
-                    <span>Разом до сплати:</span>
-                    <span id="cart-total-price">0 ₴</span>
-                </div>
-                <button class="checkout-btn" onclick="sendToTelegram()">Оформити замовлення</button>
-            </div>
-        </div>
-    </div>
+    <footer class="footer">
+        <p>&copy; 2026 Sky Store & OblakoTeam. Все права защищены.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
