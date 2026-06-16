@@ -3,67 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sky Store | OblakoTeam</title>
+    <title>OblakoTeam / Sky Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">Sky Store <span class="accent">OblakoTeam</span></div>
-        <nav class="nav">
-            <a href="#catalog">Каталог</a>
+    <header>
+        <div class="logo">OblakoTeam <span>Store</span></div>
+        <nav>
             <a href="#about">О нас</a>
-            <button class="admin-open-btn" id="openAdminBtn">Админ-панель</button>
+            <a href="#catalog">Каталог</a>
+            <a href="#contacts">Контакты</a>
         </nav>
+        <div class="cart-icon" id="cartIcon">
+            🛒 <span id="cartCount">0</span>
+        </div>
     </header>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Лучшие цифровые товары и скрипты</h1>
-            <p>Быстрая доставка, гарантия качества и поддержка 24/7</p>
-            <a href="#catalog" class="btn-main">Перейти в каталог</a>
+            <h1>Добро пожаловать в Sky Store</h1>
+            <p>Лучшие игровые товары, донаты и скрипты в одном месте</p>
+            <a href="#catalog" class="btn">Перейти в каталог</a>
         </div>
     </section>
 
-    <main class="container">
-        <h2 id="catalog" class="section-title">Каталог товаров</h2>
+    <section id="about" class="about-section">
+        <h2>О нас</h2>
+        <p>Мы — команда OblakoTeam. Занимаемся разработкой, подбором и продажей качественного цифрового контента, игровых скриптов и услуг. Наша цель — предоставить лучший сервис, моментальную доставку товаров и полную безопасность для каждого клиента.</p>
+    </section>
+
+    <section id="catalog" class="catalog-section">
+        <h2>Каталог товаров</h2>
         <div class="products-grid" id="productsContainer">
             </div>
-    </main>
+    </section>
 
-    <div class="admin-modal" id="adminModal">
-        <div class="admin-modal-content">
-            <h3>Управление магазином</h3>
-            
-            <div id="adminAuthBlock">
-                <input type="password" id="adminPassword" placeholder="Введите пароль админа">
-                <button class="save-product-btn" id="loginAdminBtn">Войти</button>
+    <footer id="contacts">
+        <div class="footer-content">
+            <h2>Контакты</h2>
+            <p>Есть вопросы или нужна поддержка? Свяжитесь с нами!</p>
+            <div class="social-links">
+                <a href="https://t.me/ТВОЙ_ТЕЛЕГРАМ_НИК" target="_blank" class="social-btn tg">Telegram Поддержка</a>
             </div>
+            <p class="copy">&copy; 2026 OblakoTeam Store. Все права защищены.</p>
+        </div>
+    </footer>
 
-            <div id="adminControlBlock" style="display: none;">
-                <h4>Добавить новый товар</h4>
-                <input type="text" id="newProdName" placeholder="Название товара">
-                <input type="number" id="newProdPrice" placeholder="Цена (руб.)">
-                <input type="text" id="newProdImg" placeholder="Ссылка на картинку">
-                <textarea id="newProdDesc" placeholder="Описание товара" rows="3"></textarea>
-                
-                <div class="admin-modal-buttons">
-                    <button class="save-product-btn" id="saveProductBtn">Сохранить</button>
-                    <button class="close-admin-btn" id="closeAdminBtn">Закрыть</button>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content" id="cartContentWrapper">
+            <h3>Ваша корзина</h3>
+            <div class="cart-items" id="cartItemsContainer">
                 </div>
-
-                <hr style="border: 1px solid #333; margin: 20px 0;">
-                <h4>Текущие товары</h4>
-                <div id="adminProductsList"></div>
+            <div class="cart-summary">
+                <span>Итого:</span>
+                <span id="cartTotalPrice">0 руб.</span>
             </div>
-            
-            <button class="close-admin-btn" id="closeAuthBtn" style="margin-top: 15px; width: 100%;">Закрыть</button>
+            <div class="cart-buttons">
+                <button class="btn-checkout" id="checkoutBtn">Оформить в Telegram</button>
+                <button class="btn-close" id="closeCartBtn">Закрыть</button>
+            </div>
         </div>
     </div>
 
-    <footer class="footer">
-        <p>&copy; 2026 Sky Store & OblakoTeam. Все права защищены.</p>
-    </footer>
+    <div class="admin-modal" id="adminModal">
+        <div class="admin-content">
+            <h3>Управление товарами</h3>
+            <div class="admin-form">
+                <input type="text" id="newProdName" placeholder="Название товара">
+                <input type="number" id="newProdPrice" placeholder="Цена (руб.)">
+                <input type="text" id="newProdImg" placeholder="Ссылка на картинку">
+                <button id="addProdBtn" class="btn">Добавить товар</button>
+            </div>
+            <div class="admin-items-list" id="adminItemsList">
+                </div>
+            <button class="btn-close" id="closeAdminBtn">Выйти из админки</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
