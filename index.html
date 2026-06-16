@@ -1,99 +1,112 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="uk">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2022.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-    span.s1 {font: 12.0px 'Apple Color Emoji'}
-    span.s2 {font: 12.0px 'Zapf Dingbats'}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sky Store — Аксесуари</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="ru"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;OblakoTeam | Monochrome Hookah Shop&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="style.css"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="cloud-bg"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cloud cloud-1"&gt;<span class="s1">☁️</span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cloud cloud-2"&gt;<span class="s1">☁️</span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cloud cloud-3"&gt;<span class="s1">☁️</span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cloud cloud-4"&gt;<span class="s1">☁️</span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="site-wrapper"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;header class="header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="top-nav"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="container flex-between"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="logo"&gt;OBLAKO&lt;span&gt;TEAM&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="search-bar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;input type="text" placeholder="Поиск аксессуаров..."&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button&gt;<span class="s1">🔍</span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="header-actions"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;button class="action-btn" onclick="toggleCart()"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span class="icon"&gt;<span class="s1">🛒</span>&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                            </span>&lt;span id="cart-count"&gt;0&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p2"><span class="Apple-converted-space">            </span></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;nav class="categories-nav"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;ul class="cat-list"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#" onclick="filterCat('Все')"&gt;Все&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#" onclick="filterCat('Кальяны')"&gt;Кальяны&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#" onclick="filterCat('Чаши')"&gt;Чаши&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#" onclick="filterCat('Колбы')"&gt;Колбы&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                        </span>&lt;li&gt;&lt;a href="#" onclick="filterCat('Аксессуары')"&gt;Аксессуары&lt;/a&gt;&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/nav&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;main class="container"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;section class="main-banner"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="banner-text"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;h1&gt;Твій ідеальний вечір починається з Oblako&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                    </span>&lt;p&gt;«Все необхідне для твого релаксу в одному місці. Створюємо правильну атмосферу разом»&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h2 class="title"&gt;Популярне&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grid" id="products-grid"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/main&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="cart-overlay" onclick="toggleCart()"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="cart-sidebar"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cart-header flex-between"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3&gt;Моя корзина&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;button onclick="toggleCart()"&gt;<span class="s2">✕</span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="cart-items"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="cart-total"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="total-row flex-between"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span&gt;Всего к оплате:&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">                </span>&lt;span id="cart-total"&gt;0 ₴&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="order-btn" onclick="sendOrder()"&gt;Оформить заказ в Telegram&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="script.js"&gt;&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+    <div id="welcome-screen" onclick="enterStore()">
+        <div class="welcome-content">
+            <div class="welcome-logo">☁️</div>
+            <h1>Ласкаво просимо до Sky Store</h1>
+            <p>Стильні аксесуари та найкраща якість</p>
+            <button class="welcome-btn">Увійти в магазин</button>
+        </div>
+    </div>
+
+    <header class="main-header hidden-content">
+        <div class="header-container">
+            <div class="logo">Sky<span>Store</span></div>
+            
+            <div class="header-buttons">
+                <button class="admin-open-btn" onclick="openAdminAuth()">🔐 Адмін</button>
+
+                <div class="cart-icon-wrapper" onclick="toggleCart()">
+                    <div class="cart-icon">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        <span id="cart-count">0</span>
+                    </div>
+                    <span class="cart-text">Кошик</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero hidden-content">
+        <div class="hero-container">
+            <h1>Преміум аксесуари</h1>
+            <p>Обирайте найкраще для своїх девайсів із нашого каталогу</p>
+        </div>
+    </section>
+
+    <main class="catalog-container hidden-content">
+        <div id="products-grid" class="products-grid">
+            </div>
+    </main>
+
+    <div id="adminAuthModal" class="admin-modal">
+        <div class="admin-modal-content">
+            <h2>Вхід в панель адміна</h2>
+            <input type="password" id="adminPassword" placeholder="Введіть пароль">
+            <div class="admin-modal-buttons">
+                <button class="save-product-btn" onclick="checkAdminPassword()">Увійти</button>
+                <button class="close-admin-btn" onclick="closeAdminAuth()">Скасувати</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminPanelModal" class="admin-modal">
+        <div class="admin-modal-content admin-panel-wide">
+            <div class="admin-panel-header">
+                <h2>Панель керування товарами ☁️</h2>
+                <button class="close-panel-x" onclick="closeAdminPanel()">✕</button>
+            </div>
+            
+            <div class="add-product-form">
+                <h3>Додати новий товар</h3>
+                <input type="text" id="newProdName" placeholder="Назва товару (напр., Чохол Silicone Case)">
+                <input type="number" id="newProdPrice" placeholder="Ціна в гривнях (напр., 550)">
+                <input type="text" id="newProdDesc" placeholder="Короткий опис товару">
+                
+                <div class="file-input-wrapper">
+                    <label>Виберіть фото товару:</label>
+                    <input type="file" id="newProdImage" accept="image/*">
+                </div>
+                
+                <button class="save-product-btn" style="background-color: #007bff;" onclick="addNewProduct()">Зберегти та додати на сайт</button>
+            </div>
+
+            <div class="admin-products-list">
+                <h3>Поточні товари на сайті</h3>
+                <div id="admin-items-container">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>Ваш кошик</h2>
+                <button class="close-cart-btn" onclick="toggleCart()">✕</button>
+            </div>
+            <div id="cart-items-list" class="cart-items-container"></div>
+            <div class="cart-footer">
+                <div class="total-row">
+                    <span>Разом до сплати:</span>
+                    <span id="cart-total-price">0 ₴</span>
+                </div>
+                <button class="checkout-btn" onclick="sendToTelegram()">Оформити замовлення</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
